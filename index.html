@@ -42,6 +42,29 @@
       rgba(11,17,32,.78) 75%, #0B1120 96%);}
   .ridge{position:fixed; bottom:0; left:0; right:0; z-index:-1; opacity:.5}
 
+  /* ---------- top navigation ---------- */
+  .topnav{position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 26px; transition:background .25s ease, box-shadow .25s ease;
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px)}
+  .topnav.scrolled{background:rgba(11,17,32,.82); box-shadow:0 1px 0 var(--line)}
+  .brand{font-weight:700; color:var(--ink); font-size:1.02rem; letter-spacing:.01em}
+  .brand:hover{text-decoration:none}
+  .brand .gold{color:var(--gold)}
+  .navlinks{display:flex; align-items:center; gap:22px}
+  .navlinks a{color:var(--ink2); font-size:.92rem; font-weight:500}
+  .navlinks a:hover{color:var(--ink); text-decoration:none}
+  .navlinks a.donate-pill{color:#20180A; font-weight:700; padding:8px 18px;
+    border-radius:999px; background:linear-gradient(135deg,var(--gold),var(--gold2));
+    box-shadow:0 3px 14px rgba(240,195,109,.28)}
+  .navlinks a.donate-pill:hover{transform:translateY(-1px)}
+  @media(max-width:760px){
+    .navlinks{gap:14px}
+    .navlinks a.nv-extra{display:none}
+    .navlinks a{font-size:.88rem}
+  }
+  section, header.hero{scroll-margin-top:74px}
+
   /* ---------- layout ---------- */
   .wrap{max-width:1060px; margin:0 auto; padding:0 22px}
   header.hero{padding:44vh 0 90px; text-align:center; position:relative}
@@ -61,7 +84,10 @@
     box-shadow:0 6px 24px rgba(240,195,109,.25)}
   .btn.ghost:hover{border-color:var(--gold)}
 
-  section{padding:64px 0}
+  section{padding:72px 0}
+  /* sections that follow big filled panels need extra breathing room */
+  #burn, #flow, #donate{padding-top:118px}
+  #links{padding-top:100px}
   h2{font-size:1.9rem; letter-spacing:-.01em; margin-bottom:8px}
   .kicker{color:var(--gold); text-transform:uppercase; letter-spacing:.14em; font-size:.8rem; font-weight:700}
   .lead{color:var(--ink2); max-width:700px; margin-top:6px}
@@ -159,7 +185,20 @@
         fill="#0A0F1C"/>
 </svg>
 
-<header class="hero wrap">
+<nav class="topnav" id="topnav">
+  <a class="brand" href="#top">🐺 Full<span class="gold">Moon</span></a>
+  <div class="navlinks">
+    <a href="#mission">Mission</a>
+    <a href="#treasury">Treasury</a>
+    <a href="#flow" class="nv-extra">Policy</a>
+    <a href="#burn" class="nv-extra">Burns</a>
+    <a href="#receipts" class="nv-extra">Receipts</a>
+    <a href="#links">Links</a>
+    <a href="#donate" class="donate-pill">Donate</a>
+  </div>
+</nav>
+
+<header class="hero wrap" id="top">
   <span class="badge">🐺 FullMoon · $HOWL · Solana</span>
   <h1>We move as a pack.<br><span class="gold">And every move is on-chain.</span></h1>
   <p class="sub">FullMoon is a community token built to prove crypto doesn't have to be a
@@ -456,11 +495,13 @@ const CONFIG = {
 const $ = (id) => document.getElementById(id);
 const fmt = (n, d=2) => Number(n).toLocaleString("en-US",{maximumFractionDigits:d});
 
-/* hero artwork scroll-fade */
+/* hero artwork scroll-fade + nav background */
 (function(){
   const bg=document.getElementById("heroBg");
+  const nav=document.getElementById("topnav");
   window.addEventListener("scroll",()=>{
     bg.style.opacity=Math.max(0,1-window.scrollY/(window.innerHeight*0.85));
+    nav.classList.toggle("scrolled", window.scrollY>40);
   },{passive:true});
 })();
 
