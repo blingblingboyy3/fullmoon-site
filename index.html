@@ -43,25 +43,26 @@
       rgba(11,17,32,.78) 75%, #0B1120 96%);}
 
   /* the moon breathes */
-  .moon-glow{position:absolute; top:4vh; left:50%; width:min(74vw,660px);
+  .moon-glow{position:absolute; top:1vh; left:50%; width:min(96vw,820px);
     aspect-ratio:1; transform:translateX(-50%); pointer-events:none;
-    background:radial-gradient(circle, rgba(240,195,109,.17) 0%,
-      rgba(240,195,109,.07) 42%, transparent 66%);
-    mix-blend-mode:screen; animation:breathe 7s ease-in-out infinite}
+    background:radial-gradient(circle, rgba(240,195,109,.26) 0%,
+      rgba(240,195,109,.15) 34%, rgba(240,195,109,.06) 55%, transparent 72%);
+    mix-blend-mode:screen; animation:breathe 6.5s ease-in-out infinite}
   @keyframes breathe{
-    0%,100%{opacity:.5; transform:translateX(-50%) scale(1)}
-    50%{opacity:1; transform:translateX(-50%) scale(1.05)}}
+    0%,100%{opacity:.4; transform:translateX(-50%) scale(1)}
+    50%{opacity:1; transform:translateX(-50%) scale(1.06)}}
 
   /* shooting stars phase in and out */
-  .shoot{position:absolute; width:130px; height:2px; border-radius:2px;
-    background:linear-gradient(90deg, rgba(255,247,214,.95), transparent);
-    filter:drop-shadow(0 0 6px rgba(240,195,109,.8));
+  .shoot{position:absolute; width:180px; height:2.5px; border-radius:3px;
+    background:linear-gradient(90deg, #FFF7D6, rgba(255,247,214,.55), transparent);
+    filter:drop-shadow(0 0 9px rgba(240,195,109,.95));
     opacity:0; animation:shoot linear infinite; pointer-events:none}
   @keyframes shoot{
     0%{opacity:0; transform:translate(0,0) rotate(-28deg)}
-    2%{opacity:.9}
-    11%{opacity:0; transform:translate(-44vw,24vw) rotate(-28deg)}
-    100%{opacity:0; transform:translate(-44vw,24vw) rotate(-28deg)}}
+    2%{opacity:1}
+    9%{opacity:.85}
+    14%{opacity:0; transform:translate(-46vw,25vw) rotate(-28deg)}
+    100%{opacity:0; transform:translate(-46vw,25vw) rotate(-28deg)}}
   .ridge{position:fixed; bottom:0; left:0; right:0; z-index:-1; opacity:.5}
 
   /* ---------- top navigation ---------- */
@@ -575,12 +576,12 @@ const fmt = (n, d=2) => Number(n).toLocaleString("en-US",{maximumFractionDigits:
 /* shooting stars — a few, staggered, drifting across the hero art */
 (function(){
   const bg=document.getElementById("heroBg");
-  for(let i=0;i<3;i++){
+  for(let i=0;i<4;i++){
     const st=document.createElement("div"); st.className="shoot";
-    st.style.top=(4+Math.random()*32)+"%";
-    st.style.left=(48+Math.random()*46)+"%";
-    st.style.animationDuration=(10+Math.random()*9)+"s";
-    st.style.animationDelay=(i*5+Math.random()*4)+"s";
+    st.style.top=(4+Math.random()*34)+"%";
+    st.style.left=(45+Math.random()*50)+"%";
+    st.style.animationDuration=(8+Math.random()*7)+"s";
+    st.style.animationDelay=(i*3.5+Math.random()*3)+"s";
     bg.appendChild(st);
   }
 })();
