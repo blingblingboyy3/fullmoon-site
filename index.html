@@ -65,6 +65,16 @@
   }
   section, header.hero{scroll-margin-top:74px}
 
+  /* slim quick-links strip under the nav */
+  .quicklinks{position:absolute; top:72px; left:0; right:0; z-index:5;
+    display:flex; gap:9px; justify-content:center; flex-wrap:wrap; padding:0 16px}
+  .quicklinks a{display:inline-flex; align-items:center; gap:7px;
+    padding:7px 15px; border-radius:999px; font-size:.84rem; font-weight:600;
+    color:var(--ink2); background:rgba(17,24,41,.5); border:1px solid rgba(36,50,82,.7);
+    backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    transition:border-color .15s ease, color .15s ease}
+  .quicklinks a:hover{color:var(--ink); border-color:var(--gold); text-decoration:none}
+
   /* ---------- layout ---------- */
   .wrap{max-width:1060px; margin:0 auto; padding:0 22px}
   header.hero{padding:44vh 0 90px; text-align:center; position:relative}
@@ -83,6 +93,14 @@
   .btn.primary{background:linear-gradient(135deg,var(--gold),var(--gold2)); color:#20180A; border:none;
     box-shadow:0 6px 24px rgba(240,195,109,.25)}
   .btn.ghost:hover{border-color:var(--gold)}
+  .hero-links{margin-top:26px; display:flex; gap:11px; justify-content:center}
+  .hero-links a{width:44px; height:44px; border-radius:50%; display:flex;
+    align-items:center; justify-content:center; font-size:1.1rem;
+    background:rgba(20,28,48,.55); border:1px solid var(--line);
+    backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+    transition:transform .15s ease, border-color .15s ease}
+  .hero-links a:hover{transform:translateY(-2px); border-color:var(--gold);
+    text-decoration:none}
 
   section{padding:72px 0}
   /* sections that follow big filled panels need extra breathing room */
@@ -198,6 +216,8 @@
   </div>
 </nav>
 
+<div class="quicklinks" id="quickLinks" aria-label="Official links"></div>
+
 <header class="hero wrap" id="top">
   <span class="badge">🐺 FullMoon · $HOWL · Solana</span>
   <h1>We move as a pack.<br><span class="gold">And every move is on-chain.</span></h1>
@@ -209,6 +229,7 @@
     <a class="btn primary" href="#donate">Donate to the Treasury</a>
     <a class="btn ghost" href="#treasury">View Live Treasury</a>
   </div>
+  <div class="hero-links" id="heroLinks"></div>
 </header>
 
 <section class="wrap" id="mission">
@@ -326,7 +347,7 @@
   <div class="flow">
     <div class="fnode"><strong>Pump.fun creator fees</strong><br><span>earned on-chain</span></div>
     <div class="farrow">↓</div>
-    <div class="fnode"><strong>Public fee wallet</strong><br><span>trackable by anyone</span></div>
+    <div class="fnode"><strong>Public fee wallet</strong><br><span id="feeNode">trackable by anyone — address published at launch</span></div>
     <div class="farrow">↓</div>
     <div class="fnode"><strong>Published allocation</strong><br><span>50 / 50 — announced before funds move</span></div>
     <div class="farrow">↓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓</div>
@@ -403,8 +424,10 @@
 <section class="wrap" id="links">
   <div class="kicker">Official Links</div>
   <h2>One source of truth.</h2>
-  <p class="lead">Bookmark this section. If a link or contract address didn't come
-     from here or the official Telegram, it's fake — no exceptions.</p>
+  <p class="lead">Everything official lives in three places: this page, the official
+     Telegram, and our X. Links and the contract address will always be posted on all
+     of them — so before you trust anything from anywhere else, check it against one
+     of these. If it doesn't match, it's fake.</p>
 
   <div class="chips" id="chipRow"></div>
 
@@ -439,6 +462,13 @@
       Nothing here is financial advice. Admins will never DM you first, and the only
       official links are the ones on this page.
     </div>
+    <p style="margin-top:16px; font-size:.78rem; color:var(--ink3); line-height:1.55">
+      FullMoon is an independent community project and is not affiliated with,
+      endorsed by, or sponsored by the American Wolf Foundation. We donate to their
+      mission because wolves are literally our whole thing — the foundation just
+      does the good work. All donations are made independently, and every one is
+      documented on the receipts wall above.
+    </p>
   </div>
 </footer>
 
@@ -466,6 +496,11 @@ const CONFIG = {
     // { date: "2026-08-01", amountSol: 5.0, tx: "https://solscan.io/tx/....",
     //   conversion: "", receipt: "", note: "Donation #1 🐺" },
   ],
+
+  // The public CREATOR-FEE wallet (where pump.fun fees are claimed).
+  // Shown in the "How the money moves" diagram with a Solscan link
+  // so anyone can track it. Leave "" until launch.
+  FEE_WALLET: "",
 
   // ---- token & burn tracker ----
   // Your token's mint (contract) address. Leave "" until launch.
@@ -568,19 +603,32 @@ function copyAddr(){
   });
 }
 
-/* ---------- official links & contract ---------- */
+/* ---------- official links: chips (Links section) + hero icons ---------- */
 (function(){
   const defs=[
-    ["telegram","💬 Telegram"],["twitter","𝕏 Twitter"],
-    ["dexscreener","📈 Chart"],["pumpfun","💊 Pump.fun"],
-    ["phantom","👻 Get Phantom"],
+    ["telegram","💬","Telegram"],["twitter","𝕏","X / Twitter"],
+    ["dexscreener","📈","Chart"],["pumpfun","💊","Pump.fun"],
+    ["phantom","👻","Get Phantom"],
   ];
-  const row=$("chipRow");
-  defs.forEach(([key,label])=>{
+  const row=$("chipRow"), hero=$("heroLinks"), quick=$("quickLinks");
+  defs.forEach(([key,ico,label])=>{
     const url=CONFIG.LINKS[key];
-    if(url) row.innerHTML+=`<a class="chip" href="${url}" target="_blank" rel="noopener">${label}</a>`;
+    if(!url) return;
+    row.innerHTML+=`<a class="chip" href="${url}" target="_blank" rel="noopener">${ico} ${label}</a>`;
+    if(key!=="phantom")  // hero row: socials only, keep it minimal
+      hero.innerHTML+=`<a href="${url}" target="_blank" rel="noopener" title="${label}">${ico}</a>`;
+    if(["telegram","twitter","phantom"].includes(key))  // top strip
+      quick.innerHTML+=`<a href="${url}" target="_blank" rel="noopener">${ico} ${label}</a>`;
   });
 })();
+
+/* fee wallet — show trackable address in the diagram once set */
+if (CONFIG.FEE_WALLET && CONFIG.FEE_WALLET.length > 20){
+  const fw=CONFIG.FEE_WALLET;
+  $("feeNode").innerHTML =
+    `<a href="https://solscan.io/account/${fw}" target="_blank" rel="noopener">`+
+    `${fw.slice(0,4)}…${fw.slice(-4)} — track it live ↗</a>`;
+}
 
 const hasToken = CONFIG.TOKEN_MINT && CONFIG.TOKEN_MINT.length > 20;
 if (hasToken){
