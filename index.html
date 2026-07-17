@@ -126,6 +126,16 @@
   .empty-receipts{margin-top:22px; color:var(--ink3); border:1px dashed var(--line);
     border-radius:12px; padding:22px; text-align:center}
 
+  /* ---------- money flow diagram ---------- */
+  .flow{max-width:600px; margin:36px auto 0}
+  .fnode{background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:14px 18px; text-align:center; color:var(--ink)}
+  .fnode span{color:var(--ink3); font-size:.85rem}
+  .fnode.burn{border-color:rgba(240,195,109,.45)}
+  .farrow{text-align:center; color:var(--gold); padding:7px 0; font-size:1.15rem}
+  .fbranch{display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start}
+  @media(max-width:560px){.fbranch{grid-template-columns:1fr}}
+
   /* ---------- link chips ---------- */
   .chips{display:flex; flex-wrap:wrap; gap:12px; margin-top:26px}
   .chip{display:inline-flex; align-items:center; gap:9px; padding:12px 20px;
@@ -153,8 +163,9 @@
   <span class="badge">🐺 FullMoon · $HOWL · Solana</span>
   <h1>We move as a pack.<br><span class="gold">And every move is on-chain.</span></h1>
   <p class="sub">FullMoon is a community token built to prove crypto doesn't have to be a
-     greedy, scary place. Public wallets. Plans shared with everyone. And every dev fee
-     burned — or donated to the <a href="https://www.americanwolf.org" target="_blank" rel="noopener">American Wolf Foundation</a>.</p>
+     greedy, scary place. Public wallets. Plans shared with everyone. And creator fees
+     burned or donated to the <a href="https://www.americanwolf.org" target="_blank" rel="noopener">American Wolf Foundation</a> —
+     under a published policy, not discretion.</p>
   <div class="cta-row">
     <a class="btn primary" href="#donate">Donate to the Treasury</a>
     <a class="btn ghost" href="#treasury">View Live Treasury</a>
@@ -176,16 +187,24 @@
       <p>Every question and idea is welcome, from anyone. New members are welcomed,
          not farmed. We strive for the moon together or not at all.</p></div>
     <div class="card"><span class="ico">🌲</span><h3>Real-world good</h3>
-      <p>Every dev fee is burned or donated to the American Wolf Foundation — with
-         on-chain proof posted for every single one, right here on this page.</p></div>
+      <p>Creator fees are split between token burns and conservation under the
+         published policy below — with the fund movement, conversion record, and
+         foundation receipt published for every donation.</p></div>
   </div>
+  <p class="lead" style="margin-top:26px">
+     Our promise is <strong style="color:var(--ink)">fair dealing and receipts</strong> —
+     not protection from market risk. Crypto is volatile and nothing on this page is
+     financial advice. What we can promise: you'll always see exactly what we do.</p>
 </section>
 
 <section class="wrap" id="treasury">
   <div class="kicker">Live Treasury</div>
   <h2>Watch the wallet. Verify everything.</h2>
-  <p class="lead">This page reads the donation wallet directly from the Solana blockchain.
-     We can't fake it, hide it, or edit it — and that's the point.</p>
+  <p class="lead">This page reads the <strong style="color:var(--ink)">Community
+     Conservation Donations wallet</strong> directly from the Solana blockchain —
+     100% of what lands here is earmarked for the foundation, never burned, never
+     mixed with fees or operations. Every balance and transaction can be independently
+     checked against Solana: the chain is the source of truth, not this interface.</p>
 
   <div class="treasury">
     <div class="tiles">
@@ -226,9 +245,10 @@
 <section class="wrap" id="burn">
   <div class="kicker">Burn Tracker</div>
   <h2>Less supply. More moon. 🔥</h2>
-  <p class="lead">Dev fees that aren't donated get burned — removed from existence
-     forever. This tracker reads the token's live supply straight from Solana:
-     burned = launch supply minus what exists now. No trust required.</p>
+  <p class="lead">The burn side of the creator-fee policy: tokens removed from
+     existence forever. This tracker reads the token's live supply straight from
+     Solana — burned = launch supply minus what exists now — and you can verify
+     that math yourself on-chain. The chain, not this page, is the source of truth.</p>
 
   <div class="treasury">
     <div class="tiles">
@@ -254,6 +274,41 @@
         every one gets listed here with its on-chain transaction.</li></ul>
     </div>
   </div>
+</section>
+
+<section class="wrap" id="flow">
+  <div class="kicker">The Policy</div>
+  <h2>How the money moves.</h2>
+  <p class="lead">No discretion, no mystery. <strong style="color:var(--ink)">50% of
+     eligible creator fees are burned, 50% go to conservation</strong> — and that split
+     only changes if a change is proposed to the Pack publicly, before any funds move.
+     Every step below is publicly visible.</p>
+
+  <div class="flow">
+    <div class="fnode"><strong>Pump.fun creator fees</strong><br><span>earned on-chain</span></div>
+    <div class="farrow">↓</div>
+    <div class="fnode"><strong>Public fee wallet</strong><br><span>trackable by anyone</span></div>
+    <div class="farrow">↓</div>
+    <div class="fnode"><strong>Published allocation</strong><br><span>50 / 50 — announced before funds move</span></div>
+    <div class="farrow">↓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓</div>
+    <div class="fbranch">
+      <div>
+        <div class="fnode burn"><strong>🔥 Burn</strong><br><span>50% — tokens destroyed forever, visible in the supply</span></div>
+      </div>
+      <div>
+        <div class="fnode"><strong>🌲 Wolf Fund</strong><br><span>50% — conservation allocation</span></div>
+        <div class="farrow">↓</div>
+        <div class="fnode"><strong>USD conversion</strong><br><span>conversion record published</span></div>
+        <div class="farrow">↓</div>
+        <div class="fnode"><strong>American Wolf Foundation</strong><br><span>donation delivered</span></div>
+        <div class="farrow">↓</div>
+        <div class="fnode"><strong>Receipts wall</strong><br><span>fund movement + conversion + receipt, published below</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="lead" style="margin-top:26px; font-size:.95rem">
+     Community donations to the treasury above are a separate stream: they skip the
+     split entirely — 100% earmarked for the foundation.</p>
 </section>
 
 <section class="wrap" id="donate">
@@ -291,9 +346,9 @@
     <div class="card"><span class="ico">2️⃣</span><h3>The goal fills</h3>
       <p>When the treasury hits the target, the pack donates the pot to the
          American Wolf Foundation.</p></div>
-    <div class="card"><span class="ico">3️⃣</span><h3>Proof gets posted</h3>
-      <p>The transaction and the foundation receipt go on the wall below —
-         permanently, publicly, verifiably.</p></div>
+    <div class="card"><span class="ico">3️⃣</span><h3>Records get posted</h3>
+      <p>The on-chain fund movement, the conversion record, and the foundation's
+         receipt go on the wall below — permanently and publicly.</p></div>
   </div>
 </section>
 
@@ -301,7 +356,8 @@
   <div class="kicker">The Receipts Wall</div>
   <h2>Every donation. Proven.</h2>
   <p class="lead">Talk is cheap; receipts aren't. Each completed donation is listed with
-     its on-chain transaction and the foundation's confirmation.</p>
+     its on-chain fund movement, the USD conversion record, and the foundation's
+     receipt — the full paper trail from wallet to wolves.</p>
   <div id="receiptsTable"></div>
 </section>
 
@@ -365,10 +421,11 @@ const CONFIG = {
 
   // Completed donations — add one entry each time the pack donates.
   // amountSol: what was sent · tx: Solscan link of the on-chain transfer
-  // receipt: link/screenshot of the foundation's confirmation (optional)
+  // conversion: link/screenshot of the SOL→USD conversion record
+  // receipt: link/screenshot of the foundation's confirmation
   DONATIONS: [
     // { date: "2026-08-01", amountSol: 5.0, tx: "https://solscan.io/tx/....",
-    //   receipt: "", note: "Donation #1 🐺" },
+    //   conversion: "", receipt: "", note: "Donation #1 🐺" },
   ],
 
   // ---- token & burn tracker ----
@@ -434,13 +491,14 @@ $("donatedCount").textContent = CONFIG.DONATIONS.length
   if(!CONFIG.DONATIONS.length){
     host.innerHTML=`<div class="empty-receipts">🌑 No donations completed yet — the first
       one lands when the treasury hits ${CONFIG.GOAL_SOL} SOL. It'll be listed here with
-      full on-chain proof.</div>`;
+      the full paper trail: fund movement, conversion record, and foundation receipt.</div>`;
     return;
   }
   let rows=CONFIG.DONATIONS.map(d=>`<tr>
       <td>${d.date||""}</td><td class="amt">${fmt(d.amountSol)} SOL</td>
       <td>${d.note||""}</td>
       <td>${d.tx?`<a href="${d.tx}" target="_blank" rel="noopener">on-chain tx ↗</a>`:""}
+          ${d.conversion?` · <a href="${d.conversion}" target="_blank" rel="noopener">conversion ↗</a>`:""}
           ${d.receipt?` · <a href="${d.receipt}" target="_blank" rel="noopener">receipt ↗</a>`:""}</td>
     </tr>`).join("");
   host.innerHTML=`<table><thead><tr><th>Date</th><th>Amount</th><th>Note</th>
