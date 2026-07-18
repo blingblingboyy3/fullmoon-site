@@ -43,32 +43,32 @@
       rgba(11,17,32,.78) 75%, #0B1120 96%);}
 
   /* the moon breathes */
-  .moon-glow{position:absolute; top:1vh; left:50%; width:min(96vw,820px);
+  .moon-glow{position:absolute; top:0; left:50%; width:min(100vw,880px);
     aspect-ratio:1; transform:translateX(-50%); pointer-events:none;
-    background:radial-gradient(circle, rgba(240,195,109,.26) 0%,
-      rgba(240,195,109,.15) 34%, rgba(240,195,109,.06) 55%, transparent 72%);
-    mix-blend-mode:screen; animation:breathe 11s ease-in-out infinite}
+    background:radial-gradient(circle, rgba(255,225,150,.60) 0%,
+      rgba(250,210,125,.34) 32%, rgba(240,195,109,.14) 54%, transparent 72%);
+    mix-blend-mode:screen; animation:breathe 10s ease-in-out infinite}
   @keyframes breathe{
     /* at rest most of the cycle... */
-    0%, 42%{opacity:.32; transform:translateX(-50%) scale(1)}
+    0%, 40%{opacity:.08; transform:translateX(-50%) scale(.98)}
     /* ...slow inhale (~2s)... */
-    60%{opacity:1; transform:translateX(-50%) scale(1.055)}
+    58%{opacity:1; transform:translateX(-50%) scale(1.08)}
     /* ...hold the glow for a beat... */
-    68%{opacity:.96; transform:translateX(-50%) scale(1.05)}
+    67%{opacity:.94; transform:translateX(-50%) scale(1.07)}
     /* ...slow exhale (~2.5s) back to rest */
-    90%, 100%{opacity:.32; transform:translateX(-50%) scale(1)}}
+    88%, 100%{opacity:.08; transform:translateX(-50%) scale(.98)}}
 
   /* shooting stars phase in and out */
-  .shoot{position:absolute; width:180px; height:2.5px; border-radius:3px;
-    background:linear-gradient(90deg, #FFF7D6, rgba(255,247,214,.55), transparent);
-    filter:drop-shadow(0 0 9px rgba(240,195,109,.95));
+  .shoot{position:fixed; z-index:-1; width:230px; height:3px; border-radius:3px;
+    background:linear-gradient(90deg, #FFFDF2, #FFE9AE 25%, rgba(255,231,174,.4) 60%, transparent);
+    filter:drop-shadow(0 0 12px rgba(255,215,130,1));
     opacity:0; animation:shoot linear infinite; pointer-events:none}
   @keyframes shoot{
     0%{opacity:0; transform:translate(0,0) rotate(-28deg)}
     2%{opacity:1}
-    9%{opacity:.85}
-    14%{opacity:0; transform:translate(-46vw,25vw) rotate(-28deg)}
-    100%{opacity:0; transform:translate(-46vw,25vw) rotate(-28deg)}}
+    12%{opacity:.9}
+    18%{opacity:0; transform:translate(-58vw,31vw) rotate(-28deg)}
+    100%{opacity:0; transform:translate(-58vw,31vw) rotate(-28deg)}}
   .ridge{position:fixed; bottom:0; left:0; right:0; z-index:-1; opacity:.5}
 
   /* ---------- top navigation ---------- */
@@ -579,16 +579,15 @@ const fmt = (n, d=2) => Number(n).toLocaleString("en-US",{maximumFractionDigits:
   },{passive:true});
 })();
 
-/* shooting stars — a few, staggered, drifting across the hero art */
+/* shooting stars — site-wide, fixed to the sky behind all content */
 (function(){
-  const bg=document.getElementById("heroBg");
-  for(let i=0;i<4;i++){
+  for(let i=0;i<10;i++){
     const st=document.createElement("div"); st.className="shoot";
-    st.style.top=(4+Math.random()*34)+"%";
-    st.style.left=(45+Math.random()*50)+"%";
-    st.style.animationDuration=(8+Math.random()*7)+"s";
-    st.style.animationDelay=(i*3.5+Math.random()*3)+"s";
-    bg.appendChild(st);
+    st.style.top=(Math.random()*80)+"%";          // whole viewport height
+    st.style.left=(5+Math.random()*105)+"%";      // edge to edge (and beyond)
+    st.style.animationDuration=(7+Math.random()*6)+"s";
+    st.style.animationDelay=(i*1.5+Math.random()*2)+"s";
+    document.body.appendChild(st);
   }
 })();
 
