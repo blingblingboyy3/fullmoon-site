@@ -42,21 +42,6 @@
       rgba(11,17,32,.20) 0%, rgba(11,17,32,.42) 45%,
       rgba(11,17,32,.78) 75%, #0B1120 96%);}
 
-  /* the moon breathes */
-  .moon-glow{position:absolute; top:0; left:50%; width:min(100vw,880px);
-    aspect-ratio:1; transform:translateX(-50%); pointer-events:none;
-    background:radial-gradient(circle, rgba(255,225,150,.60) 0%,
-      rgba(250,210,125,.34) 32%, rgba(240,195,109,.14) 54%, transparent 72%);
-    mix-blend-mode:screen; animation:breathe 10s ease-in-out infinite}
-  @keyframes breathe{
-    /* at rest most of the cycle... */
-    0%, 40%{opacity:.08; transform:translateX(-50%) scale(.98)}
-    /* ...slow inhale (~2s)... */
-    58%{opacity:1; transform:translateX(-50%) scale(1.08)}
-    /* ...hold the glow for a beat... */
-    67%{opacity:.94; transform:translateX(-50%) scale(1.07)}
-    /* ...slow exhale (~2.5s) back to rest */
-    88%, 100%{opacity:.08; transform:translateX(-50%) scale(.98)}}
 
   /* shooting stars phase in and out */
   .shoot{position:fixed; z-index:-1; width:230px; height:3px; border-radius:3px;
@@ -175,7 +160,7 @@
   @keyframes sheen{0%{transform:translateX(-130%)}55%,100%{transform:translateX(130%)}}
 
   @media (prefers-reduced-motion: reduce){
-    .star,.moon-glow,.shoot,.pulse,.bar .fill::after{animation:none}
+    .star,.shoot,.pulse,.bar .fill::after{animation:none}
   }
   .goal .note{color:var(--ink3); font-size:.85rem; margin-top:10px}
 
@@ -236,7 +221,7 @@
 </head>
 <body>
 <div class="sky"></div>
-<div class="hero-bg" id="heroBg" aria-hidden="true"><div class="moon-glow"></div></div>
+<div class="hero-bg" id="heroBg" aria-hidden="true"></div>
 <svg class="ridge" viewBox="0 0 1440 180" preserveAspectRatio="none" height="140" width="100%" aria-hidden="true">
   <path d="M0,180 L0,120 L140,70 L260,120 L400,40 L540,110 L700,55 L860,125 L1020,60 L1180,115 L1320,75 L1440,120 L1440,180 Z"
         fill="#0A0F1C"/>
