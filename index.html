@@ -195,8 +195,13 @@
   .empty-receipts{margin-top:22px; color:var(--ink3); border:1px dashed var(--line);
     border-radius:12px; padding:22px; text-align:center}
 
-  /* ---------- money flow diagram ---------- */
-  .flow{max-width:600px; margin:36px auto 0}
+  /* ---------- money flow diagrams ---------- */
+  .streams{display:grid; grid-template-columns:1fr 1fr; gap:34px;
+    margin-top:38px; align-items:start}
+  @media(max-width:860px){.streams{grid-template-columns:1fr; gap:44px}}
+  .stream h3{font-size:1rem; color:var(--ink2); text-align:center;
+    margin-bottom:16px; font-weight:600}
+  .flow{max-width:600px; margin:0 auto}
   .fnode{background:var(--card); border:1px solid var(--line); border-radius:12px;
     padding:14px 18px; text-align:center; color:var(--ink)}
   .fnode span{color:var(--ink3); font-size:.85rem}
@@ -364,36 +369,55 @@
 <section class="wrap" id="flow">
   <div class="kicker">The Policy</div>
   <h2>How the money moves.</h2>
-  <p class="lead">No discretion, no mystery. <strong style="color:var(--ink)">50% of
-     eligible creator fees are burned, 50% go to conservation</strong> — and that split
-     only changes if a change is proposed to the Pack publicly, before any funds move.
+  <p class="lead">Two separate streams, two clear rules — and they never share a
+     wallet. <strong style="color:var(--ink)">Creator fees follow the published 50/50
+     policy. Your donations skip the split entirely: 100% to the foundation.</strong>
      Every step below is publicly visible.</p>
 
-  <div class="flow">
-    <div class="fnode"><strong>Pump.fun creator fees</strong><br><span>earned on-chain</span></div>
-    <div class="farrow">↓</div>
-    <div class="fnode"><strong>Public fee wallet</strong><br><span id="feeNode">trackable by anyone — address published at launch</span></div>
-    <div class="farrow">↓</div>
-    <div class="fnode"><strong>Published allocation</strong><br><span>50 / 50 — announced before funds move</span></div>
-    <div class="farrow">↓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓</div>
-    <div class="fbranch">
-      <div>
-        <div class="fnode burn"><strong>🔥 Burn</strong><br><span>50% — tokens destroyed forever, visible in the supply</span></div>
+  <div class="streams">
+    <div class="stream">
+      <h3>💼 Creator fees — the 50/50 policy</h3>
+      <div class="flow">
+        <div class="fnode"><strong>Pump.fun creator fees</strong><br><span>earned on-chain</span></div>
+        <div class="farrow">↓</div>
+        <div class="fnode"><strong>Public fee wallet</strong><br><span id="feeNode">trackable by anyone — address published at launch</span></div>
+        <div class="farrow">↓</div>
+        <div class="fnode"><strong>Published allocation</strong><br><span>50 / 50 — announced before funds move</span></div>
+        <div class="farrow">↓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓</div>
+        <div class="fbranch">
+          <div>
+            <div class="fnode burn"><strong>🔥 Burn</strong><br><span>50% — tokens destroyed forever, visible in the supply</span></div>
+          </div>
+          <div>
+            <div class="fnode"><strong>🌲 Wolf Fund</strong><br><span>50% — conservation allocation</span></div>
+            <div class="farrow">↓</div>
+            <div class="fnode"><strong>USD conversion</strong><br><span>conversion record published</span></div>
+            <div class="farrow">↓</div>
+            <div class="fnode"><strong>American Wolf Foundation</strong><br><span>donation delivered</span></div>
+            <div class="farrow">↓</div>
+            <div class="fnode"><strong>Receipts wall</strong><br><span>records published below</span></div>
+          </div>
+        </div>
       </div>
-      <div>
-        <div class="fnode"><strong>🌲 Wolf Fund</strong><br><span>50% — conservation allocation</span></div>
+    </div>
+
+    <div class="stream">
+      <h3>💛 Your donations — 100% to the wolves</h3>
+      <div class="flow">
+        <div class="fnode"><strong>You donate SOL</strong><br><span>sent to the community donations wallet</span></div>
+        <div class="farrow">↓</div>
+        <div class="fnode"><strong>Community Donations Wallet</strong><br><span>public — watched live in the treasury above</span></div>
+        <div class="farrow">↓</div>
+        <div class="fnode"><strong>Goal reached</strong><br><span>the donation is announced to the Pack</span></div>
         <div class="farrow">↓</div>
         <div class="fnode"><strong>USD conversion</strong><br><span>conversion record published</span></div>
         <div class="farrow">↓</div>
-        <div class="fnode"><strong>American Wolf Foundation</strong><br><span>donation delivered</span></div>
+        <div class="fnode"><strong>American Wolf Foundation</strong><br><span>100% delivered — never burned, never split, never mixed with fees</span></div>
         <div class="farrow">↓</div>
-        <div class="fnode"><strong>Receipts wall</strong><br><span>fund movement + conversion + receipt, published below</span></div>
+        <div class="fnode"><strong>Receipts wall</strong><br><span>the full paper trail, published below</span></div>
       </div>
     </div>
   </div>
-  <p class="lead" style="margin-top:26px; font-size:.95rem">
-     Community donations to the treasury above are a separate stream: they skip the
-     split entirely — 100% earmarked for the foundation.</p>
 </section>
 
 <section class="wrap" id="donate">
