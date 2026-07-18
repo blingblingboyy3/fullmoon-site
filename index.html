@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FullMoon ($HOWL) — The Pack's Transparent Treasury</title>
-<meta name="description" content="FullMoon is a Solana community token run like a pack: radical transparency, public wallets, and every dev fee burned or donated to the American Wolf Foundation.">
+<meta name="description" content="FullMoon is a Solana community token run like a pack: radical transparency, public wallets, and every dev fee burned or donated to Wolf Haven International.">
 <meta name="author" content="blingblingboyy3">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
@@ -254,7 +254,7 @@
   <h1>We move as a pack.<br><span class="gold">And every move is on-chain.</span></h1>
   <p class="sub">FullMoon is a community token built to prove crypto doesn't have to be a
      greedy, scary place. Public wallets. Plans shared with everyone. And creator fees
-     burned or donated to the <a href="https://www.americanwolf.org" target="_blank" rel="noopener">American Wolf Foundation</a> —
+     burned or donated to the <a href="https://wolfhaven.org" target="_blank" rel="noopener">Wolf Haven International</a> —
      under a published policy, not discretion.</p>
   <div class="cta-row">
     <a class="btn primary" href="#donate">Donate to the Treasury</a>
@@ -279,8 +279,8 @@
          not farmed. We strive for the moon together or not at all.</p></div>
     <div class="card"><span class="ico">🌲</span><h3>Real-world good</h3>
       <p>Creator fees are split between token burns and conservation under the
-         published policy below — with the fund movement, conversion record, and
-         foundation receipt published for every donation.</p></div>
+         published policy below — with the fund movement and the sanctuary's
+         confirmation published for every donation.</p></div>
   </div>
   <p class="lead" style="margin-top:26px">
      Our promise is <strong style="color:var(--ink)">fair dealing and receipts</strong> —
@@ -392,9 +392,9 @@
           <div>
             <div class="fnode"><strong>🌲 Wolf Fund</strong><br><span>50% — conservation allocation</span></div>
             <div class="farrow">↓</div>
-            <div class="fnode"><strong>USD conversion</strong><br><span>conversion record published</span></div>
+            <div class="fnode"><strong>Crypto donation</strong><br><span>sent via every.org/wolfhaven — confirmation published</span></div>
             <div class="farrow">↓</div>
-            <div class="fnode"><strong>American Wolf Foundation</strong><br><span>donation delivered</span></div>
+            <div class="fnode"><strong>Wolf Haven International</strong><br><span>donation delivered</span></div>
             <div class="farrow">↓</div>
             <div class="fnode"><strong>Receipts wall</strong><br><span>records published below</span></div>
           </div>
@@ -411,9 +411,9 @@
         <div class="farrow">↓</div>
         <div class="fnode"><strong>Goal reached</strong><br><span>the donation is announced to the Pack</span></div>
         <div class="farrow">↓</div>
-        <div class="fnode"><strong>USD conversion</strong><br><span>conversion record published</span></div>
+        <div class="fnode"><strong>Crypto donation</strong><br><span>sent via every.org/wolfhaven — confirmation published</span></div>
         <div class="farrow">↓</div>
-        <div class="fnode"><strong>American Wolf Foundation</strong><br><span>100% delivered — never burned, never split, never mixed with fees</span></div>
+        <div class="fnode"><strong>Wolf Haven International</strong><br><span>100% delivered — never burned, never split, never mixed with fees</span></div>
         <div class="farrow">↓</div>
         <div class="fnode"><strong>Receipts wall</strong><br><span>the full paper trail, published below</span></div>
       </div>
@@ -455,10 +455,10 @@
          within seconds.</p></div>
     <div class="card"><span class="ico">2️⃣</span><h3>The goal fills</h3>
       <p>When the treasury hits the target, the pack donates the pot to the
-         American Wolf Foundation.</p></div>
+         Wolf Haven International.</p></div>
     <div class="card"><span class="ico">3️⃣</span><h3>Records get posted</h3>
-      <p>The on-chain fund movement, the conversion record, and the foundation's
-         receipt go on the wall below — permanently and publicly.</p></div>
+      <p>The on-chain fund movement and the sanctuary's confirmation go on the
+         wall below — permanently and publicly.</p></div>
   </div>
 </section>
 
@@ -466,8 +466,8 @@
   <div class="kicker">The Receipts Wall</div>
   <h2>Every donation. Proven.</h2>
   <p class="lead">Talk is cheap; receipts aren't. Each completed donation is listed with
-     its on-chain fund movement, the USD conversion record, and the foundation's
-     receipt — the full paper trail from wallet to wolves.</p>
+     its on-chain fund movement and the sanctuary's confirmation — the full
+     paper trail from wallet to wolves.</p>
   <div id="receiptsTable"></div>
 </section>
 
@@ -504,7 +504,7 @@
         Built by the pack, for the wolves. · dev: blingblingboyy3
       </div>
       <div id="footLinks">
-        <a href="https://www.americanwolf.org" target="_blank" rel="noopener">American Wolf Foundation</a>
+        <a href="https://wolfhaven.org" target="_blank" rel="noopener">Wolf Haven International</a>
       </div>
     </div>
     <div class="warn">
@@ -516,8 +516,8 @@
        color:var(--ink3); line-height:1.55"></p>
     <p style="margin-top:16px; font-size:.78rem; color:var(--ink3); line-height:1.55">
       FullMoon is an independent community project and is not affiliated with,
-      endorsed by, or sponsored by the American Wolf Foundation. We donate to their
-      mission because wolves are literally our whole thing — the foundation just
+      endorsed by, or sponsored by Wolf Haven International. We donate to their
+      mission because wolves are literally our whole thing — the sanctuary just
       does the good work. All donations are made independently, and every one is
       documented on the receipts wall above.
     </p>
@@ -542,8 +542,8 @@ const CONFIG = {
 
   // Completed donations — add one entry each time the pack donates.
   // amountSol: what was sent · tx: Solscan link of the on-chain transfer
-  // conversion: link/screenshot of the SOL→USD conversion record
-  // receipt: link/screenshot of the foundation's confirmation
+  // conversion: link to the every.org donation record (optional)
+  // receipt: link/screenshot of Wolf Haven's confirmation
   DONATIONS: [
     // { date: "2026-08-01", amountSol: 5.0, tx: "https://solscan.io/tx/....",
     //   conversion: "", receipt: "", note: "Donation #1 🐺" },
@@ -650,7 +650,7 @@ $("donatedCount").textContent = CONFIG.DONATIONS.length
   if(!CONFIG.DONATIONS.length){
     host.innerHTML=`<div class="empty-receipts">🌑 No donations completed yet — the first
       one lands when the treasury hits ${CONFIG.GOAL_SOL} SOL. It'll be listed here with
-      the full paper trail: fund movement, conversion record, and foundation receipt.</div>`;
+      the full paper trail: fund movement and sanctuary confirmation.</div>`;
     return;
   }
   let rows=CONFIG.DONATIONS.map(d=>`<tr>
