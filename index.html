@@ -512,6 +512,8 @@
       Nothing here is financial advice. Admins will never DM you first, and the only
       official links are the ones on this page.
     </div>
+    <p id="contactLine" style="display:none; margin-top:16px; font-size:.78rem;
+       color:var(--ink3); line-height:1.55"></p>
     <p style="margin-top:16px; font-size:.78rem; color:var(--ink3); line-height:1.55">
       FullMoon is an independent community project and is not affiliated with,
       endorsed by, or sponsored by the American Wolf Foundation. We donate to their
@@ -567,11 +569,19 @@ const CONFIG = {
   // ---- official links (chips + footer; leave "" to hide) ----
   LINKS: {
     telegram:    "",   // e.g. "https://t.me/yourgroup"
-    twitter:     "",   // e.g. "https://x.com/yourproject"
+    twitter:     "https://x.com/Howl_FullMoon",
     dexscreener: "",   // chart link, once live
     pumpfun:     "",   // pump.fun page, if applicable
     phantom:     "",   // wallet download — paste "https://phantom.com" to re-enable
   },
+
+  // ---- contact (footer, small print) ----
+  // Stored in two pieces so email-scraping spam bots reading the raw
+  // page source don't find a complete address. The browser assembles
+  // it only when the page renders.
+  // Example: user "fullmoonhowl", domain "gmail.com"
+  CONTACT_EMAIL_USER: "howl.fullmoon7",
+  CONTACT_EMAIL_DOMAIN: "gmail.com",
 
   REFRESH_MS: 15000,
 };
@@ -611,11 +621,22 @@ for (let i=0;i<70;i++){
   document.body.appendChild(s);
 }
 
+/* contact email — assembled at render time, small print, footer only */
+(function(){
+  const u=CONFIG.CONTACT_EMAIL_USER, d=CONFIG.CONTACT_EMAIL_DOMAIN;
+  if(!u||!d) return;
+  const el=$("contactLine"), addr=u+"@"+d;
+  el.style.display="block";
+  el.innerHTML=`Serious inquiries only — foundation contact, partnerships, or other
+    legitimate matters: <a href="mailto:${addr}">${addr}</a>. Support questions
+    belong in the Telegram; this inbox doesn't do "wen moon."`;
+})();
+
 /* footer links */
 (function(){
   const f=$("footLinks");
   if(CONFIG.LINKS.telegram) f.innerHTML=`<a href="${CONFIG.LINKS.telegram}" target="_blank" rel="noopener">Telegram</a> · `+f.innerHTML;
-  if(CONFIG.LINKS.twitter)  f.innerHTML=`<a href="${CONFIG.LINKS.twitter}" target="_blank" rel="noopener">X / Twitter</a> · `+f.innerHTML;
+  if(CONFIG.LINKS.twitter)  f.innerHTML=`<a href="${CONFIG.LINKS.twitter}" target="_blank" rel="noopener">𝕏</a> · `+f.innerHTML;
 })();
 
 /* receipts wall + donated tiles */
@@ -668,7 +689,7 @@ function copyAddr(){
 /* ---------- official links: chips (Links section) + hero icons ---------- */
 (function(){
   const defs=[
-    ["telegram","💬","Telegram"],["twitter","𝕏","X / Twitter"],
+    ["telegram","💬","Telegram"],["twitter","𝕏",""],
     ["dexscreener","📈","Chart"],["pumpfun","💊","Pump.fun"],
     ["phantom","👻","Get Phantom"],
   ];
@@ -676,11 +697,12 @@ function copyAddr(){
   defs.forEach(([key,ico,label])=>{
     const url=CONFIG.LINKS[key];
     if(!url) return;
-    row.innerHTML+=`<a class="chip" href="${url}" target="_blank" rel="noopener">${ico} ${label}</a>`;
+    const text=(ico+" "+label).trim();
+    row.innerHTML+=`<a class="chip" href="${url}" target="_blank" rel="noopener">${text}</a>`;
     if(key!=="phantom")  // hero row: socials only, keep it minimal
-      hero.innerHTML+=`<a href="${url}" target="_blank" rel="noopener" title="${label}">${ico}</a>`;
+      hero.innerHTML+=`<a href="${url}" target="_blank" rel="noopener" title="${label||'X'}">${ico}</a>`;
     if(["telegram","twitter","phantom"].includes(key))  // top strip
-      quick.innerHTML+=`<a href="${url}" target="_blank" rel="noopener">${ico} ${label}</a>`;
+      quick.innerHTML+=`<a href="${url}" target="_blank" rel="noopener">${text}</a>`;
   });
 })();
 
