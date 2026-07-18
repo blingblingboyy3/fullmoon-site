@@ -47,10 +47,16 @@
     aspect-ratio:1; transform:translateX(-50%); pointer-events:none;
     background:radial-gradient(circle, rgba(240,195,109,.26) 0%,
       rgba(240,195,109,.15) 34%, rgba(240,195,109,.06) 55%, transparent 72%);
-    mix-blend-mode:screen; animation:breathe 6.5s ease-in-out infinite}
+    mix-blend-mode:screen; animation:breathe 11s ease-in-out infinite}
   @keyframes breathe{
-    0%,100%{opacity:.4; transform:translateX(-50%) scale(1)}
-    50%{opacity:1; transform:translateX(-50%) scale(1.06)}}
+    /* at rest most of the cycle... */
+    0%, 42%{opacity:.32; transform:translateX(-50%) scale(1)}
+    /* ...slow inhale (~2s)... */
+    60%{opacity:1; transform:translateX(-50%) scale(1.055)}
+    /* ...hold the glow for a beat... */
+    68%{opacity:.96; transform:translateX(-50%) scale(1.05)}
+    /* ...slow exhale (~2.5s) back to rest */
+    90%, 100%{opacity:.32; transform:translateX(-50%) scale(1)}}
 
   /* shooting stars phase in and out */
   .shoot{position:absolute; width:180px; height:2.5px; border-radius:3px;
