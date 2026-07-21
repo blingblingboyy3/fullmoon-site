@@ -173,6 +173,7 @@
     border-bottom:1px solid rgba(36,50,82,.6); font-size:.93rem; color:var(--ink2)}
   .feed li .amt{color:var(--green); font-weight:600; font-variant-numeric:tabular-nums; white-space:nowrap}
   .feed .empty{color:var(--ink3); font-size:.9rem; padding:8px 4px}
+  .feenote{color:var(--ink3); font-size:.85rem; line-height:1.55; margin-top:12px}
 
   /* ---------- donate ---------- */
   .donate-grid{display:grid; grid-template-columns:1.2fr .8fr; gap:20px; margin-top:30px}
@@ -338,7 +339,7 @@
   <h2>Less supply. More moon. 🔥</h2>
   <p class="lead">The burn side of the creator-fee policy: tokens removed from
      existence forever. This tracker reads the token's live supply straight from
-     Solana — burned = launch supply minus what exists now — and you can verify
+     Solana — burned = starting supply minus what exists now — and you can verify
      that math yourself on-chain. The chain, not this page, is the source of truth.</p>
 
   <div class="treasury">
@@ -361,8 +362,8 @@
     </div>
     <div class="feed" id="burnListWrap" style="margin-top:26px">
       <h3>Burn history</h3>
-      <ul id="burnList"><li class="empty">🌑 The first burn lands after launch —
-        every one gets listed here with its on-chain transaction.</li></ul>
+      <ul id="burnList"><li class="empty">🌑 No burns logged here yet —
+        every burn gets listed with its on-chain transaction.</li></ul>
     </div>
   </div>
 </section>
@@ -381,7 +382,7 @@
       <div class="flow">
         <div class="fnode"><strong>Pump.fun creator fees</strong><br><span>earned on-chain</span></div>
         <div class="farrow">↓</div>
-        <div class="fnode"><strong>Public fee wallet</strong><br><span id="feeNode">trackable by anyone — address published at launch</span></div>
+        <div class="fnode"><strong>Public fee wallet</strong><br><span id="feeNode">trackable on-chain — every claim logged below</span></div>
         <div class="farrow">↓</div>
         <div class="fnode"><strong>Published allocation</strong><br><span>50 / 50 — announced before funds move</span></div>
         <div class="farrow">↓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓</div>
@@ -399,6 +400,16 @@
             <div class="fnode"><strong>Receipts wall</strong><br><span>records published below</span></div>
           </div>
         </div>
+      </div>
+      <div class="feed" id="feeClaimsWrap">
+        <h3>Fees claimed to date: <span id="feeTotal" style="color:var(--green)">0 SOL</span></h3>
+        <ul id="feeClaims"><li class="empty">🌑 No fee claims yet — the first one lands here with its transaction.</li></ul>
+        <p class="feenote">One thing worth saying plainly: the fee wallet also holds
+           the dev's personal $HOWL. That's why this tracker counts
+           <strong style="color:var(--ink)">logged fee claims only</strong> — each tied
+           to its on-chain transaction — and never the wallet's raw balance. The raw
+           balance would look bigger than what the 50/50 policy actually covers, and
+           we don't count money that isn't the policy's to spend.</p>
       </div>
     </div>
 
@@ -438,9 +449,8 @@
           never trust an address from a DM.</p>
       </div>
       <div id="addrSoon" class="soon">
-        🌘 The donation wallet goes live at launch. The address will be posted here and
-        in our official Telegram — <strong>nowhere else</strong>. Anyone DMing you an
-        address early is a scammer.
+        🌘 The donation wallet address is posted here and in our official Telegram —
+        <strong>nowhere else</strong>. Anyone DMing you a different address is a scammer.
       </div>
     </div>
     <div id="qrWrap" style="display:none; text-align:center">
@@ -490,8 +500,8 @@
         Verify it yourself: <a id="caSolscan" href="#" target="_blank" rel="noopener">view the token on Solscan ↗</a></p>
     </div>
     <div id="caSoon" class="soon">
-      🌘 The contract address drops at launch — here and in the official Telegram,
-      nowhere else. Any "CA" you see before that announcement is a scam.
+      🌘 The official contract address is posted here and in the official Telegram,
+      nowhere else. Any "CA" you see anywhere else is a scam.
     </div>
   </div>
 </section>
@@ -554,6 +564,16 @@ const CONFIG = {
   // so anyone can track it. Leave "" until launch.
   FEE_WALLET: "",
 
+  // Creator-fee claims — add one entry each time you claim fees from
+  // pump.fun into the fee wallet. IMPORTANT: the fee wallet also holds
+  // personal funds, so the site NEVER shows its raw balance — the fee
+  // tracker counts ONLY the claims logged here, each tied to its
+  // transaction. amountSol: SOL claimed · tx: Solscan link of the claim
+  FEE_CLAIMS: [
+    // { date:"2026-07-25", amountSol: 1.25,
+    //   tx:"https://solscan.io/tx/...", note:"Claim #1" },
+  ],
+
   // ---- token & burn tracker ----
   // Your token's mint (contract) address. Leave "" until launch.
   TOKEN_MINT: "87kdzhXBsdQdc7S9WfvWYvXsesGeRwhEDF7XSLXBpump",
@@ -561,9 +581,12 @@ const CONFIG = {
   // CURRENT supply from the chain; burned = initial - current.
   INITIAL_SUPPLY: 1000000000,
   // Burn log — add one entry per burn (shown as receipts).
+  // tx: best is a specific Solscan tx link (solscan.io/tx/<sig>);
+  // a burn-wallet account link also works as a verifiable receipt.
   BURNS: [
-    // { date:"2026-08-05", amount: 10000000, tx:"https://solscan.io/tx/...",
-    //   note:"Burn #1 🔥" },
+    { date:"2026-07-21", amount: 232583.34,
+      tx:"https://solscan.io/account/2LmSja7Fy7Ws82vc7s1boXAUMVnhXA9TwSUBgNNJaeNK",
+      note:"Burn #1 🔥" },
   ],
 
   // ---- official links (chips + footer; leave "" to hide) ----
@@ -714,6 +737,21 @@ if (CONFIG.FEE_WALLET && CONFIG.FEE_WALLET.length > 20){
     `${fw.slice(0,4)}…${fw.slice(-4)} — track it live ↗</a>`;
 }
 
+/* fee-claims ledger — logged claims ONLY, never the wallet balance
+   (the wallet also holds personal funds; counting them would be
+   claiming money the policy doesn't cover) */
+(function(){
+  const claims = CONFIG.FEE_CLAIMS || [];
+  const total = claims.reduce((a,c)=>a+(c.amountSol||0),0);
+  $("feeTotal").textContent = `${fmt(total,4)} SOL`;
+  if(!claims.length) return;
+  $("feeClaims").innerHTML = claims.map(c=>`<li>
+    <span>💼 ${c.note||"Fee claim"} <span style="color:var(--ink3)">· ${c.date||""}</span>
+      ${c.tx?` <a href="${c.tx}" target="_blank" rel="noopener" style="color:var(--gold)">tx ↗</a>`:""}</span>
+    <span class="amt">${fmt(c.amountSol||0,4)} SOL</span>
+  </li>`).join("");
+})();
+
 const hasToken = CONFIG.TOKEN_MINT && CONFIG.TOKEN_MINT.length > 20;
 if (hasToken){
   $("caReady").style.display="block"; $("caSoon").style.display="none";
@@ -741,10 +779,10 @@ $("burnCount").textContent = CONFIG.BURNS.length;
 let lastBurn=0;
 async function refreshBurn(){
   if(!hasToken){
-    // pre-launch: show the logged total (usually 0)
+    // chain read unavailable: fall back to the logged total
     $("burnTotal").textContent=fmt(burnLogTotal,0);
     $("burnPct").textContent="0";
-    $("burnSub").textContent="burns begin after launch";
+    $("burnSub").textContent="";
     return;
   }
   try{
