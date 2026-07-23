@@ -239,6 +239,7 @@
   <a class="brand" href="#top">🐺 Full<span class="gold">Moon</span></a>
   <div class="navlinks">
     <a href="#mission">Mission</a>
+    <a href="#market" class="nv-extra">Market</a>
     <a href="#treasury">Treasury</a>
     <a href="#flow" class="nv-extra">Policy</a>
     <a href="#burn" class="nv-extra">Burns</a>
@@ -263,6 +264,42 @@
   </div>
   <div class="hero-links" id="heroLinks"></div>
 </header>
+
+<section class="wrap" id="market">
+  <div class="kicker">Live Market</div>
+  <h2>The hunt, in real time 📈</h2>
+  <p class="lead">Straight from the chart — price, market cap, liquidity and
+     24-hour volume, pulled live from Dexscreener the moment you load the page.
+     Every number is verifiable; tap through to trade or check it yourself.</p>
+
+  <div class="treasury">
+    <div class="tiles">
+      <div class="tile live">
+        <div class="label"><span class="pulse"></span>Price</div>
+        <div class="value"><span id="mPrice">—</span></div>
+        <div class="subvalue" id="mChange">&nbsp;</div>
+      </div>
+      <div class="tile">
+        <div class="label">Market Cap</div>
+        <div class="value"><span id="mMcap">—</span></div>
+        <div class="subvalue">live market cap</div>
+      </div>
+      <div class="tile">
+        <div class="label">Liquidity</div>
+        <div class="value"><span id="mLiq">—</span></div>
+        <div class="subvalue">in the PumpSwap pool</div>
+      </div>
+      <div class="tile">
+        <div class="label">24h Volume</div>
+        <div class="value"><span id="mVol">—</span></div>
+        <div class="subvalue" id="marketNote">live from Dexscreener</div>
+      </div>
+    </div>
+    <div style="margin-top:20px">
+      <a class="btn primary" id="chartBtn" href="https://dexscreener.com/solana/87kdzhXBsdQdc7S9WfvWYvXsesGeRwhEDF7XSLXBpump" target="_blank" rel="noopener">Open the live chart ↗</a>
+    </div>
+  </div>
+</section>
 
 <section class="wrap" id="mission">
   <div class="kicker">The Mission</div>
@@ -548,6 +585,8 @@ const CONFIG = {
   // "https://mainnet.helius-rpc.com/?api-key=YOUR-KEY",
   RPC_URLS: [
     "https://api.mainnet-beta.solana.com",
+    "https://solana-rpc.publicnode.com",
+    "https://solana.drpc.org",
   ],
 
   // Completed donations — add one entry each time the pack donates.
@@ -822,6 +861,48 @@ async function fetchPrice(){
   }catch(e){}
 }
 
+/* ---------- live market data (Dexscreener) ---------- */
+function fmtPrice(x){
+  if(!isFinite(x)||x<=0) return "—";
+  if(x>=1)    return "$"+x.toLocaleString("en-US",{maximumFractionDigits:4});
+  if(x>=0.01) return "$"+x.toFixed(4);
+  // tiny memecoin prices: show enough significant digits, no exponent
+  return "$"+x.toLocaleString("en-US",{maximumSignificantDigits:4});
+}
+function fmtUsd0(x){ return "$"+fmt(x,0); }
+
+async function fetchMarket(){
+  if(!hasToken) return;
+  try{
+    const r=await fetch(`https://api.dexscreener.com/latest/dex/tokens/${CONFIG.TOKEN_MINT}`);
+    const j=await r.json();
+    const pairs=(j&&j.pairs)||[];
+    if(!pairs.length){                    // not indexed yet (fresh graduation)
+      $("marketNote").textContent="waiting for the PumpSwap pool to index…";
+      return;
+    }
+    // most-liquid pair wins
+    pairs.sort((a,b)=>(b.liquidity?.usd||0)-(a.liquidity?.usd||0));
+    const p=pairs[0];
+    const price=Number(p.priceUsd);
+    const mcap=Number(p.marketCap||p.fdv||0);
+    const liq=Number(p.liquidity?.usd||0);
+    const vol=Number(p.volume?.h24||0);
+    if(isFinite(price)&&price>0) $("mPrice").textContent=fmtPrice(price);
+    if(mcap>0) $("mMcap").textContent=fmtUsd0(mcap);
+    if(liq>0)  $("mLiq").textContent=fmtUsd0(liq);
+    $("mVol").textContent=fmtUsd0(vol);
+    const ch=Number(p.priceChange?.h24);
+    if(isFinite(ch)){
+      const el=$("mChange");
+      el.textContent=(ch>=0?"▲ +":"▼ ")+ch.toFixed(1)+"% · 24h";
+      el.style.color=ch>=0?"var(--green)":"var(--red)";
+    }
+    if(p.url) $("chartBtn").href=p.url;    // deep-link to the exact live pair
+    $("marketNote").textContent="live · "+((p.dexId||"pumpswap"));
+  }catch(e){ /* keep last values on screen */ }
+}
+
 function animateNumber(el, from, to, decimals){
   const t0=performance.now(), dur=900;
   function step(t){
@@ -888,9 +969,11 @@ async function refreshFeed(){
 
 fetchPrice().then(refreshTreasury).then(refreshFeed);
 refreshBurn();
+fetchMarket();
 setInterval(refreshBurn, CONFIG.REFRESH_MS*2);
 setInterval(refreshTreasury, CONFIG.REFRESH_MS);
 setInterval(refreshFeed, CONFIG.REFRESH_MS*4);
+setInterval(fetchMarket, CONFIG.REFRESH_MS);
 setInterval(fetchPrice, 120000);
 </script>
 </body>
